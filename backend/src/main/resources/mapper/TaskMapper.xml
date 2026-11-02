@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.studio.mapper.TaskMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO task (task_no, user_id, template_id, status)
+        VALUES (#{taskNo}, #{userId}, #{templateId}, #{status})
+    </insert>
+
+    <insert id="insertTaskAsset">
+        INSERT INTO task_asset (task_id, asset_id, sort_order)
+        VALUES (#{taskId}, #{assetId}, #{sortOrder})
+    </insert>
+
+    <select id="selectByNo" resultType="com.example.studio.model.TaskEntity">
+        SELECT id, task_no, user_id, template_id, status, current_stage, failure_stage,
+               failure_reason, result_url, created_at, updated_at
+        FROM task
+        WHERE task_no = #{taskNo}
+    </select>
+
+    <select id="selectByUser" resultType="com.example.studio.model.TaskEntity">
+        SELECT id, task_no, user_id, template_id, status, current_stage, failure_stage,
+               failure_reason, result_url, created_at, updated_at
+        FROM task
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC, id DESC
+        LIMIT 100
+    </select>
+
+    <select id="selectTaskAssets" resultType="string">
+        SELECT a.url
+        FROM task_asset ta
+        JOIN asset a ON a.id = ta.asset_id
+        WHERE ta.task_id = #{taskId}
+        ORDER BY ta.sort_order
+    </select>
+
+    <select id="selectTaskAssetRecords" resultType="com.example.studio.model.Asset">
+        SELECT a.id, a.asset_no, a.user_id, a.template_id, a.original_name, a.stored_path,
+               a.url, a.mime_type, a.size_bytes
+        FROM task_asset ta
+        JOIN asset a ON a.id = ta.asset_id
+        WHERE ta.task_id = #{taskId}
+        ORDER BY ta.sort_order
+    </select>
+
+    <update id="updateStatus">
+        UPDATE task
+        SET status = #{status}, current_stage = #{currentStage}
+        WHERE id = #{taskId}
+    </update>
+
+    <update id="updateFailure">
+        UPDATE task
+        SET status = 'FAILED', current_stage = NULL,
+            failure_stage = #{failureStage}, failure_reason = #{failureReason}
+        WHERE id = #{taskId}
+    </update>
+
+    <update id="updateResult">
+        UPDATE task
+        SET status = 'SUCCESS', current_stage = NULL, result_url = #{resultUrl}
+        WHERE id = #{taskId}
+    </update>
+
+    <delete id="deleteByNo">
+        DELETE FROM task
+        WHERE task_no = #{taskNo} AND user_id = #{userId}
+    </delete>
+
+    <delete id="deleteByUser">
+        DELETE FROM task
+        WHERE user_id = #{userId}
+    </delete>
+</mapper>

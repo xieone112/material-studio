@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="400" viewBox="0 0 300 400">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#55efc4"/>
+      <stop offset="1" stop-color="#00b894"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="400" fill="url(#g)"/>
+  <circle cx="240" cy="70" r="90" fill="#ffffff" opacity="0.15"/>
+  <circle cx="40" cy="330" r="70" fill="#ffffff" opacity="0.12"/>
+  <text x="150" y="215" font-size="110" text-anchor="middle">🏝️</text>
+  <text x="150" y="330" font-family="Arial, sans-serif" font-size="26" font-weight="bold"
+        fill="#ffffff" text-anchor="middle">复古旅行明信片</text>
+  <rect x="90" y="345" width="120" height="30" rx="15" fill="#00000055"/><text x="150" y="366" font-family="Arial, sans-serif" font-size="15" fill="#fff" text-anchor="middle">✨ RESULT</text>
+</svg>

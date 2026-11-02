@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: material-studio-backend
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:material_studio}?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 60MB
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: true
+  jackson:
+    deserialization:
+      # 请求体含未知字段时直接报 400，避免拼错参数被静默忽略
+      fail-on-unknown-properties: true
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+server:
+  port: 8080
+
+app:
+  # 上传素材保存目录（容器中挂载为数据卷）
+  upload-dir: ${UPLOAD_DIR:./data/uploads}
+  # 允许跨域的前端来源
+  cors-origins: ${CORS_ORIGINS:http://localhost:3000}
+
+# 模拟生成器配置：可控制每个阶段的耗时以及指定阶段失败
+simulator:
+  # 各阶段模拟耗时（毫秒），便于观察“等待处理 / 处理中”等状态
+  material-check-ms: 4000
+  simulated-generate-ms: 6000
+  result-organize-ms: 3000
+  # 指定失败阶段：NONE / MATERIAL_CHECK / SIMULATED_GENERATE / RESULT_ORGANIZE
+  fail-stage: NONE
+  # 失败时展示的原因文案
+  fail-reason: 模拟执行失败（用于演示失败场景）
+
+logging:
+  level:
+    com.example.studio: INFO

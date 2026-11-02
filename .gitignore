@@ -1,0 +1,16 @@
+# dependencies & build output
+node_modules/
+.next/
+target/
+*.class
+
+# local runtime data
+backend/data/
+.mysql-data/
+.mysql-tmp/
+*.log
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store

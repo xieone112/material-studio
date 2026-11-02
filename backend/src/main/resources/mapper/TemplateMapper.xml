@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.studio.mapper.TemplateMapper">
+
+    <sql id="columns">
+        id, title, description, channel, category, cover_url, result_url,
+        required_image_count, accepted_mime_types, max_file_size_bytes, sort_order, enabled
+    </sql>
+
+    <select id="select" resultType="com.example.studio.model.Template">
+        SELECT <include refid="columns"/>
+        FROM template
+        WHERE enabled = 1
+        <if test="channel != null and channel != ''">
+            AND channel = #{channel}
+        </if>
+        <if test="category != null and category != ''">
+            AND category = #{category}
+        </if>
+        ORDER BY sort_order, id
+    </select>
+
+    <select id="selectById" resultType="com.example.studio.model.Template">
+        SELECT <include refid="columns"/>
+        FROM template
+        WHERE id = #{id} AND enabled = 1
+    </select>
+
+    <select id="selectCategories" resultType="string">
+        SELECT DISTINCT category
+        FROM template
+        WHERE enabled = 1
+        <if test="channel != null and channel != ''">
+            AND channel = #{channel}
+        </if>
+        ORDER BY category
+    </select>
+</mapper>
